@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+	<title>画板</title>
+	<link rel="stylesheet" href="../works/css/drawingBoard.css?2">
+	<script src="../works/js/jquery.min.js?2"></script>
+	<script src="../works/js/vue.min.js?2"></script>
+</head>
+<body>
+<div id="drawing-board-page">
+	<header>
+		<div class="current-tool">
+			<i :class="currentTool"></i>
+			<input type="hidden" name="currentTool" v-model="currentToolNum">
+		</div>
+		<ul class="tool-info clearfix">
+			<li class="lineWidth">
+				<p>线条宽度:</p>
+				<input type="number" name="lineWidth" v-model="lineWidth" v-on:input="bindLineWidth($event)">
+			</li>
+			<li class="color">
+				<p>笔触颜色:</p>
+				<div class="color-box">
+					<div class="color-value"
+						 data-type="1"
+						 :style="{backgroundColor: '#'+pageLineColor}"
+						 @click="clickPopupColorShow($event)"
+						 v-cloak></div>
+				</div>
+			</li>
+			<li class="color">
+				<p>填充颜色:</p>
+				<div class="color-box">
+					<div class="color-value"
+						 data-type="2"
+						 :style="{backgroundColor: '#'+pageFillColor}"
+						 @click="clickPopupColorShow($event)"
+						 v-cloak></div>
+				</div>
+			</li>
+			<!--<li class="alpha">
+				<p>透明度:</p>
+				<div class="select-alpha-box">
+					<input type="text" name="alpha" v-model="currentAlpha" v-on:input="bindAlpha($event)">
+					<div class="select-alpha"
+						 @click="clickSelectAlphaSliderShow()"
+					>
+						<div class="slash leftSlash"></div>
+						<div class="slash rightSlash"></div>
+					</div>
+				</div>
+				<div class="select-alpha-slider"
+					 v-if="selectAlphaSliderShow"
+					 v-cloak
+				>
+					<div class="slider-axis">
+						<div class="slider-axis-triangle"
+							 :style="{left:sliderAlpha+'px'}"
+							 @mousedown="sliderMove($event)"
+						></div>
+					</div>
+				</div>
+			</li>-->
+		</ul>
+		<div class="downloadImage" @click="downloadImage()">点击下载</div>
+		<div class="clearScreen" @click="clearScreen()">一键清屏</div>
+	</header>
+	<main class="clearfix">
+		<ul class="tools clearfix">
+			<li v-for="(tool,index) in tools"
+				:data-tool="tool.dataTool"
+				:class="{'active':index==selectedToolIndex}">
+				<i :class="tool.toolClass"
+				   @click="selectTool(tool,index)"
+				>
+				</i>
+			</li>
+		</ul>
+		<input id="select-tool" type="hidden" value="1">
+		<canvas id="drawing-board" width="862" height="400" @mousedown="painting($event)"></canvas>
+	</main>
+	<!--公用透明背景遮罩，作用：防止其他元素相应事件-->
+	<div class="tr-bk" v-if="trBk" v-cloak></div>
+	<!--T 输入框-->
+	<input type="text"
+		   name="inputText"
+		   v-model="inputTextValue"
+		   :style="{
+		   		left:inputTextPosition.x+'px',
+		   		top:inputTextPosition.y+'px',
+		   		height:lineWidth < 12 ? 12+'px':lineWidth+'px',
+		   		fontSize:lineWidth < 12 ? 12+'px':lineWidth+'px',
+		   		color:'#'+pageLineColor
+		   }"
+		   v-if="inputTextShow"
+		   @click="bindInputText($event)"
+		   v-cloak
+	>
+	<!-- 临时矩形 -->
+	<div class="tempRect"
+		 :style="{
+		 	 width:rectTempAttr.width+'px',
+		 	 height:rectTempAttr.height+'px',
+		 	 left:rectTempAttr.left+'px',
+		 	 top:rectTempAttr.top+'px',
+		 	 borderWidth:rectTempAttr.borderWidth+'px',
+		 	 borderStyle:rectTempAttr.borderStyle,
+		 	 borderColor:'#'+rectTempAttr.borderColor,
+		 	 backgroundColor:'#'+rectTempAttr.backgroundColor,
+		 }"
+		 v-if="rectTempPositionShow"
+		 v-cloak
+	></div>
+	<!--临时圆形-->
+	<div class="tempRound"
+		 :style="{
+			 width:roundTempAttr.r+'px',
+		 	 height:roundTempAttr.r+'px',
+		 	 left:roundTempAttr.left+'px',
+		 	 top:roundTempAttr.top+'px',
+		 	 borderWidth:roundTempAttr.borderWidth+'px',
+		 	 borderStyle:roundTempAttr.borderStyle,
+		 	 borderColor:'#'+roundTempAttr.borderColor,
+		 	 backgroundColor:'#'+roundTempAttr.backgroundColor,
+		 }"
+		 v-if="roundTempPositionShow"
+		 v-cloak
+	></div>
+	<div class="popup-color"
+		 :style="{left:popupColorPosition.x+'px',top:popupColorPosition.y+'px'}"
+		 v-if="popupColorShow"
+		 v-cloak
+	>
+		<div class="title" @mousedown="dragPopupColor($event)">颜色选择器</div>
+		<div class="content">
+			<div class="left">
+				<ul class="alternative-color">
+					<li v-for="color in colors"
+						:style="{backgroundColor: color}"
+						@click="selectColor($event)"
+					>
+					</li>
+				</ul>
+			</div>
+			<div class="divider"></div>
+			<div class="right">
+				<div class="color-show-box clearfix">
+					<div class="color-show">
+						新的
+						<div class="color-contrast">
+							<div class="new-color" :style="{backgroundColor:'#'+newColor}"></div>
+							<div class="current-color" :style="{backgroundColor:'#'+pageColor}"></div>
+						</div>
+						当前
+					</div>
+					<div class="color-show-btns">
+						<a href="javascript:;" class="confirm" @click="colorConfirm()">确定</a>
+						<a href="javascript:;" class="cancel" @click="colorCancel()">取消</a>
+					</div>
+				</div>
+				<div class="color-setting clearfix">
+					<div class="rgb-color clearfix">
+						<ul>
+							<li class="clearfix">
+								<p>R:</p>
+								<input type="text" name="R-color" maxlength="3" v-model="RColor"
+									   v-on:input="bindRColor($event)">
+							</li>
+							<li class="clearfix">
+								<p>G:</p>
+								<input type="text" name="G-color" maxlength="3" v-model="GColor"
+									   v-on:input="bindGColor($event)">
+							</li>
+							<li class="clearfix">
+								<p>B:</p>
+								<input type="text" name="B-color" maxlength="3" v-model="BColor"
+									   v-on:input="bindBColor($event)">
+							</li>
+						</ul>
+					</div>
+					<div class="hex-color clearfix">
+						<p>16进制值：</p>
+						<div class="hex-color-setting">
+							<p>#</p>
+							<input type="text"
+								   name="hex-color"
+								   v-model="newColor"
+								   maxlength="6"
+								   v-on:input="bindHex($event)"
+							></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="../works/js/drawingBoard.js?3"></script>
+</body>
+</html>

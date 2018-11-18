@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="怪人。" />
+
+
+
+<meta name="description" content="p.xu-sub{         width: 100%;         background-color: rgba(51,51,51,.85);         color: rgb(204,204,204);         line-height: 44px;         text-indent: 2em;         text-rendering: optimize">
+<meta name="keywords" content="node,vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="node-express结合vue-cli开发之初始环境搭建">
+<meta property="og:url" content="http://yoursite.com/2017/05/09/node-express结合vue-cli开发之初始环境搭建/index.html">
+<meta property="og:site_name" content="xu">
+<meta property="og:description" content="p.xu-sub{         width: 100%;         background-color: rgba(51,51,51,.85);         color: rgb(204,204,204);         line-height: 44px;         text-indent: 2em;         text-rendering: optimize">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://oo6bpvt6y.bkt.clouddn.com/WX20170509-110908.png">
+<meta property="og:image" content="http://oo6bpvt6y.bkt.clouddn.com/WX20170509-140645.png">
+<meta property="og:image" content="http://oo6bpvt6y.bkt.clouddn.com/WX20170509-142751.png">
+<meta property="og:image" content="http://oo6bpvt6y.bkt.clouddn.com/WX20170509-143558.png">
+<meta property="og:updated_time" content="2017-05-09T07:00:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="node-express结合vue-cli开发之初始环境搭建">
+<meta name="twitter:description" content="p.xu-sub{         width: 100%;         background-color: rgba(51,51,51,.85);         color: rgb(204,204,204);         line-height: 44px;         text-indent: 2em;         text-rendering: optimize">
+<meta name="twitter:image" content="http://oo6bpvt6y.bkt.clouddn.com/WX20170509-110908.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="xu" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>node-express结合vue-cli开发之初始环境搭建 | xu</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">怪人。</a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                            <li><a href="/works/">作品</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:1185055083@qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/mfx55" title="GitHub"></a>
+                            
+                                <a class="fa 博客园" href="https://home.cnblogs.com/u/chenluomenggongzi/" title="博客园"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fabric/">Fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jquery/">jquery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vuex/">vuex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技巧/">技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/摄影/">摄影</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">一条奔跑在前端路上的学渣狗</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">怪人。</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">怪人。</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                    <li><a href="/works/">作品</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:1185055083@qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/mfx55" title="GitHub"></a>
+                            
+                                <a class="fa 博客园" target="_blank" href="https://home.cnblogs.com/u/chenluomenggongzi/" title="博客园"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-node-express结合vue-cli开发之初始环境搭建" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/05/09/node-express结合vue-cli开发之初始环境搭建/" class="article-date">
+      <time datetime="2017-05-09T03:05:20.000Z" itemprop="datePublished">2017-05-09</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      node-express结合vue-cli开发之初始环境搭建
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Vue/">Vue</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue/">vue</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <style type="text/css">
+    p.xu-sub{
+        width: 100%;
+        background-color: rgba(51,51,51,.85);
+        color: rgb(204,204,204);
+        line-height: 44px;
+        text-indent: 2em;
+        text-rendering: optimizeLegibility;
+    }
+</style>
+
+<p>node-express结合vue-cli开发之初始环境搭建</p>
+<p><excerpt in="" index="" |="" 首页摘要=""><br><a id="more"></a></excerpt></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>node-express是<code>后台框架</code>，vue-cli是<code>前台</code>框架，所以分开写更好</p>
+<p>如图,back-end为后台文件夹，front-end为前台文件夹</p>
+<p><img src="http://oo6bpvt6y.bkt.clouddn.com/WX20170509-110908.png" alt="text"></p>
+<h2 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h2><h3 id="安装express"><a href="#安装express" class="headerlink" title="安装express"></a>安装express</h3><p class="xu-sub">npm install -g express-generator</p><p class="xu-sub">express –view ejs</p><p class="xu-sub">npm install</p>
+
+<h3 id="修改-app-js"><a href="#修改-app-js" class="headerlink" title="修改 app.js"></a>修改 app.js</h3><p class="xu-sub">设置跨域</p>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 跨域支持</span></span><br><span class="line">app.all(<span class="string">'*'</span>,<span class="function"><span class="keyword">function</span> (<span class="params">req, res, next</span>) </span>&#123;</span><br><span class="line">  res.header(<span class="string">'Access-Control-Allow-Origin'</span>, <span class="string">'*'</span>);</span><br><span class="line">  res.header(<span class="string">'Access-Control-Allow-Headers'</span>, <span class="string">'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild'</span>);</span><br><span class="line">  res.header(<span class="string">'Access-Control-Allow-Methods'</span>, <span class="string">'PUT, POST, GET, DELETE, OPTIONS'</span>);</span><br><span class="line"></span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p class="xu-sub">修改静态目录</p>
+
+<blockquote>
+<p>app.use(express.static(path.join(__dirname, ‘../front-end’)));</p>
+</blockquote>
+<p>目的，将文件目录导向前端的index.html上</p>
+<h3 id="创建connection-js"><a href="#创建connection-js" class="headerlink" title="创建connection.js"></a>创建connection.js</h3><p class="xu-sub">连接封装</p>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">'use strict'</span>;</span><br><span class="line"><span class="keyword">const</span> mysql = <span class="built_in">require</span>(<span class="string">"mysql"</span>);</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @returns &#123;Connection&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> conn = mysql.createConnection(&#123;</span><br><span class="line">        host: <span class="string">"localhost"</span>,</span><br><span class="line">        user: <span class="string">"root"</span>,</span><br><span class="line">        password: <span class="string">""</span>,</span><br><span class="line">        database: <span class="string">"test"</span></span><br><span class="line">    &#125;);</span><br><span class="line">    conn.oConnect = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">            conn.connect(<span class="function"><span class="keyword">function</span> (<span class="params">err</span>) </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (!err) &#123;</span><br><span class="line">                    resolve(conn);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    reject(err);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;;</span><br><span class="line">    conn.oQuery = <span class="function"><span class="keyword">function</span> (<span class="params">sql, values</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">            conn.query(sql, values, <span class="function"><span class="keyword">function</span> (<span class="params">err, rows</span>) </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (!err) &#123;</span><br><span class="line">                    resolve(rows);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    reject(err);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span> conn;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>我的node版本低,所以使用严格模式</p>
+<h3 id="设置路由，创建接口"><a href="#设置路由，创建接口" class="headerlink" title="设置路由，创建接口"></a>设置路由，创建接口</h3><p class="xu-sub">借口封装</p>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">'use strict'</span>;</span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">const</span> router = express.Router();</span><br><span class="line"><span class="keyword">const</span> connection = <span class="built_in">require</span>(<span class="string">'../sources/connection'</span>);</span><br><span class="line"><span class="comment">/* GET users listing. */</span></span><br><span class="line">router.get(<span class="string">'/'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res, next</span>) </span>&#123;</span><br><span class="line">&#125;);</span><br><span class="line">router.post(<span class="string">'/con'</span>,(req,res,next)=&gt;&#123;</span><br><span class="line">	<span class="keyword">let</span> conn = connection();</span><br><span class="line">	conn.oConnect().then(<span class="function"><span class="params">result</span>=&gt;</span>&#123;</span><br><span class="line">			<span class="keyword">return</span> conn.oQuery(<span class="string">'SELECT * FROM users'</span>);</span><br><span class="line">		&#125;).then(<span class="function"><span class="params">rows</span>=&gt;</span>&#123;</span><br><span class="line">			<span class="keyword">if</span>(rows.length) res.json(&#123;<span class="attr">data</span>:rows&#125;);</span><br><span class="line">			conn.end();</span><br><span class="line">		&#125;).catch(<span class="function"><span class="params">error</span>=&gt;</span>&#123;</span><br><span class="line">			res.json(&#123;<span class="attr">data</span>:error&#125;);</span><br><span class="line">		&#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = router;</span><br></pre></td></tr></table></figure>
+<h3 id="杂项"><a href="#杂项" class="headerlink" title="杂项"></a>杂项</h3><h4 id="安装-mysql-中间件"><a href="#安装-mysql-中间件" class="headerlink" title="安装 mysql 中间件"></a>安装 mysql 中间件</h4><blockquote>
+<p>npm install mysql –save</p>
+</blockquote>
+<h4 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h4><p><img src="http://oo6bpvt6y.bkt.clouddn.com/WX20170509-140645.png" alt=""></p>
+<h4 id="开启服务"><a href="#开启服务" class="headerlink" title="开启服务"></a>开启服务</h4><p class="xu-sub">cd back-end</p><p class="xu-sub">node bin/www</p>
+
+<p>这里可以在app.js添加一行代码 console.log(‘success’); 便可出现链接成功的提示</p>
+<h2 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h2><h3 id="安装vue-cli"><a href="#安装vue-cli" class="headerlink" title="安装vue-cli"></a>安装vue-cli</h3><p class="xu-sub">npm install -g vue-cli</p><br><p class="xu-sub">vue init webpack 项目名</p>
+
+<blockquote>
+<p>执行命令后会有好多选项，开始选项直接敲回车即可，毕竟练习，route选择y，其他n，毕竟练习</p>
+</blockquote>
+<h3 id="目录结构-1"><a href="#目录结构-1" class="headerlink" title="目录结构"></a>目录结构</h3><p><img src="http://oo6bpvt6y.bkt.clouddn.com/WX20170509-142751.png" alt=""></p>
+<h3 id="各个目录说明"><a href="#各个目录说明" class="headerlink" title="各个目录说明"></a>各个目录说明</h3><p><a href="https://juejin.im/entry/58f48484da2f60005d3cb46c" target="_blank" rel="noopener">点我，点我，点我</a></p>
+<h3 id="index-vue-示例"><a href="#index-vue-示例" class="headerlink" title="index.vue 示例"></a>index.vue 示例</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"hello"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span> @<span class="attr">click</span>=<span class="string">"show"</span>&gt;</span>&#123;&#123;msg&#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="javascript">  name: <span class="string">'hello'</span>,</span></span><br><span class="line"><span class="undefined">  data () &#123;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">return</span> &#123;</span></span><br><span class="line"><span class="javascript">      msg: <span class="string">'点我看数据'</span></span></span><br><span class="line"><span class="undefined">    &#125;</span></span><br><span class="line"><span class="undefined">  &#125;,</span></span><br><span class="line"><span class="undefined">  methods:&#123;</span></span><br><span class="line"><span class="javascript">    show:<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">      <span class="keyword">this</span>.$http</span></span><br><span class="line"><span class="javascript">          .post(<span class="string">'http://localhost:3000/users/con'</span>)</span></span><br><span class="line"><span class="javascript">          .then(<span class="function"><span class="params">result</span>=&gt;</span>&#123;</span></span><br><span class="line"><span class="javascript">            <span class="built_in">console</span>.log(result.data);</span></span><br><span class="line"><span class="undefined">          &#125;)</span></span><br><span class="line"><span class="undefined">    &#125;</span></span><br><span class="line"><span class="undefined">  &#125;</span></span><br><span class="line"><span class="undefined">&#125;</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- Add "scoped" attribute to limit CSS to this component only --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">scoped</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这里有个应用vue-resource的问题<br>具体引入在src文件夹下main.js中引入，如</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">'./App'</span></span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">'./router'</span></span><br><span class="line"><span class="keyword">import</span> VueResource <span class="keyword">from</span> <span class="string">'vue-resource'</span> </span><br><span class="line">Vue.config.productionTip = <span class="literal">false</span></span><br><span class="line">Vue.use(VueResource);</span><br><span class="line"><span class="comment">/* eslint-disable no-new */</span></span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#app'</span>,</span><br><span class="line">  router,</span><br><span class="line">  template: <span class="string">'&lt;App/&gt;'</span>,</span><br><span class="line">  components: &#123; App &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>import VueResource from ‘vue-resource’ </li>
+<li>Vue.use(VueResource);</li>
+</ul>
+</blockquote>
+<h3 id="执行-npm-run-dev"><a href="#执行-npm-run-dev" class="headerlink" title="执行 npm run dev"></a>执行 npm run dev</h3><p>会自动用 <a href="http://localhost:8080/#/" target="_blank" rel="noopener">localhost:8080</a> 打开</p>
+<p>如图</p>
+<p><img src="http://oo6bpvt6y.bkt.clouddn.com/WX20170509-143558.png" alt=""></p>
+<h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><h3 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h3><p><a href="https://aaaaaashu.gitbooks.io/mac-dev-setup/content/MySql/index.html" target="_blank" rel="noopener">传送门</a></p>
+<h3 id="基本设置"><a href="#基本设置" class="headerlink" title="基本设置"></a>基本设置</h3><blockquote>
+<ul>
+<li>数据库名 test</li>
+<li>表名 users</li>
+<li>三个字段 id(int),name(varchar len:128),pwd(varchar len:128)</li>
+</ul>
+</blockquote>
+<p>我用的sequel pro客户端(mac)</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>主题思路是，把前后端分开处理，前端利用跨域去请求后端数据，从而渲染到页面</p>
+</blockquote>
+<blockquote>
+<p>打开 <a href="https://github.com/mfx55/driving-test" target="_blank" rel="noopener">https://github.com/mfx55/driving-test</a> 切换到test分支即可查看所有代码</p>
+</blockquote>
+<the rest="" of="" contents="" |="" 余下全文="">
+
+
+</the>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/05/09/node-express结合vue-cli开发之初始环境搭建/">node-express结合vue-cli开发之初始环境搭建</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">怪人。</a></p>
+        <p><span>发布时间:</span>2017-05-09, 11:05:20</p>
+        <p><span>最后更新:</span>2017-05-09, 15:00:50</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/05/09/node-express结合vue-cli开发之初始环境搭建/" title="node-express结合vue-cli开发之初始环境搭建">http://yoursite.com/2017/05/09/node-express结合vue-cli开发之初始环境搭建/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/05/09/node-express结合vue-cli开发之初始环境搭建/　　作者: 怪人。" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/05/12/vuex简单使用说明/">
+                    vuex简单使用说明
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/04/28/从客户端看git命令/">
+                    从客户端看git命令
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后端"><span class="toc-number">2.</span> <span class="toc-text">后端</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装express"><span class="toc-number">2.1.</span> <span class="toc-text">安装express</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改-app-js"><span class="toc-number">2.2.</span> <span class="toc-text">修改 app.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建connection-js"><span class="toc-number">2.3.</span> <span class="toc-text">创建connection.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#设置路由，创建接口"><span class="toc-number">2.4.</span> <span class="toc-text">设置路由，创建接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#杂项"><span class="toc-number">2.5.</span> <span class="toc-text">杂项</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#安装-mysql-中间件"><span class="toc-number">2.5.1.</span> <span class="toc-text">安装 mysql 中间件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#目录结构"><span class="toc-number">2.5.2.</span> <span class="toc-text">目录结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#开启服务"><span class="toc-number">2.5.3.</span> <span class="toc-text">开启服务</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#前端"><span class="toc-number">3.</span> <span class="toc-text">前端</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装vue-cli"><span class="toc-number">3.1.</span> <span class="toc-text">安装vue-cli</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#目录结构-1"><span class="toc-number">3.2.</span> <span class="toc-text">目录结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#各个目录说明"><span class="toc-number">3.3.</span> <span class="toc-text">各个目录说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#index-vue-示例"><span class="toc-number">3.4.</span> <span class="toc-text">index.vue 示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#执行-npm-run-dev"><span class="toc-number">3.5.</span> <span class="toc-text">执行 npm run dev</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据库"><span class="toc-number">4.</span> <span class="toc-text">数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装mysql"><span class="toc-number">4.1.</span> <span class="toc-text">安装mysql</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基本设置"><span class="toc-number">4.2.</span> <span class="toc-text">基本设置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-4 i,
+        .toc-level-4 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"node-express结合vue-cli开发之初始环境搭建　| xu　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2017/05/09/node-express结合vue-cli开发之初始环境搭建/" data-title="node-express结合vue-cli开发之初始环境搭建" data-url="http://yoursite.com/2017/05/09/node-express结合vue-cli开发之初始环境搭建/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"undefined"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//oo6bpvt6y.bkt.clouddn.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+    </script>
+    
+    <script> loadComment(); </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/05/12/vuex简单使用说明/" title="上一篇: vuex简单使用说明">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/04/28/从客户端看git命令/" title="下一篇: 从客户端看git命令">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/11/18/摄影入门/">摄影入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/20/vue基础/">vue基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/29/字典技巧/">字典技巧</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/29/reduce方法/">reduce</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/05/python识别图片中的文字/">python识别图片中的文字</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/01/python爬取图片/">python爬取图片</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/01/python爬取数据/">python爬取数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/24/node爬取数据/">node爬取数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/12/vuex简单使用说明/">vuex简单使用说明</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/09/node-express结合vue-cli开发之初始环境搭建/">node-express结合vue-cli开发之初始环境搭建</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/28/从客户端看git命令/">从客户端看git命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/25/css3轨迹动画/">css3轨迹动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/24/git建库、修改、提交/">git从建库到提交</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/18/链式写法/">链式写法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/13/animation和transition/">animation和transition</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/13/3D动画/">3D动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/12/文字超出两行用省略号显示/">文字超出两行用省略号显示</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/12/before和after的强大/">before和after的强大</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/12/关于json的理解/">关于json的理解</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/12/淘宝初始化css代码/">淘宝初始化css代码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/12/cookie/">cookie</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/12/任性不用for/">任性不用for，if</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/12/li布局问题/">li布局问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/纯CSS实现点击/">纯CSS实现点击</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/js中的apply和call/">js中的apply和call</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/不同随机数/">不同随机数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/时钟/">时钟</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/等待条/">等待条</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/深度克隆/">深度克隆</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/数组重排/">数组重排</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/函数式编程/">函数式编程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/hexo命令/">hexo命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/codepen/">codeopen试验</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/10/markdown/">markdown基础语法</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 怪人。
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+             tags: ".article-tag a", 
+             categories: ".article-category a, a.tag-list-link", 
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<title>搜索框</title>
+	<script src="../works/js/vue1.0.min.js"></script>
+	<script src="../works/js/vue-resource.min.js?1"></script>
+	<link rel="stylesheet" href="../works/css/searchBox.css">
+</head>
+<body>
+
+<div id="app">
+	<input type="text"
+		   v-model="search"
+	>
+	<table border="1" cellpadding="0" cellspacing="0">
+		<thead>
+		<tr>
+			<th @click="orderByName">姓名<span class="cart" :class="{'active':sortMode==-1}"></span></th>
+			<th @click="orderByAge">年龄<span class="cart" :class="{'active':sortMode==-1}"></span></th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr v-for="item in gridData | filterBy customFilter | orderBy sort sortMode">
+			<td>{{item.name}}</td>
+			<td>{{item.age}}</td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+<script src="../works/js/searchBox.js"></script>
+</body>
+</html>

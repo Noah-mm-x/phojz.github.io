@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<title>列</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			text-decoration: none;
+		}
+
+		.clearfix {
+			zoom: 1;
+			/*处理兼容*/
+		}
+		.clearfix:after{
+			clear: both;
+			content: ".";
+			display: block;
+			width: 0;
+			height: 0;
+			visibility: hidden;
+		}
+
+		body {
+			background: url("http://oo6bpvt6y.bkt.clouddn.com/bg-01.jpg") 0 0 /cover fixed;
+		}
+
+		#full-screen {
+			position: fixed;
+			width: 100%;
+			height: 100vh;
+			background-color: rgba(255, 255, 255, .84);
+			overflow-y: scroll;
+		}
+		.title{
+			font-weight: bold;
+			font-size: 24px;
+			color: #dad4b0;
+			margin-top: 30px;
+			margin-left: 40px;
+		}
+		.content{
+			margin-top: 10px;
+			margin-left: 45px;
+		}
+		.content li{
+			margin-top: 5px;
+		}
+		.content li a{
+			font-size: 16px;
+			color: #c29029;
+		}
+	</style>
+</head>
+<body>
+<div id="full-screen">
+	<p class="title">哈哈</p>
+	<ul class="content clearfix">
+		<li class="clearfix"><a href="/works/test.html">1、我只是个测试</a></li>
+		<li class="clearfix"><a href="/works/drawingBoard.html">2、画板</a></li>
+		<li class="clearfix"><a href="/works/photosMask.html">3、照片遮罩</a></li>
+		<li class="clearfix"><a href="/works/openLetter.html">4、文字张开</a></li>
+		<li class="clearfix"><a href="/works/labelWall.html">5、便签墙</a></li>
+		<li class="clearfix"><a href="/works/searchBox.html">6、搜索框</a></li>
+		<li class="clearfix"><a href="/works/who.html">7、我是谁</a></li>
+	</ul>
+</div>
+</body>
+</html>

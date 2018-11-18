@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="怪人。" />
+
+
+
+<meta name="description" content="初衷是自己想写个网站，无奈没数据，便自己写个“偷数据”的js">
+<meta name="keywords" content="node">
+<meta property="og:type" content="article">
+<meta property="og:title" content="node爬取数据">
+<meta property="og:url" content="http://yoursite.com/2017/05/24/node爬取数据/index.html">
+<meta property="og:site_name" content="xu">
+<meta property="og:description" content="初衷是自己想写个网站，无奈没数据，便自己写个“偷数据”的js">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-06-01T05:57:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="node爬取数据">
+<meta name="twitter:description" content="初衷是自己想写个网站，无奈没数据，便自己写个“偷数据”的js">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="xu" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>node爬取数据 | xu</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.jpg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">怪人。</a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                            <li><a href="/works/">作品</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:1185055083@qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/mfx55" title="GitHub"></a>
+                            
+                                <a class="fa 博客园" href="https://home.cnblogs.com/u/chenluomenggongzi/" title="博客园"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Fabric/">Fabric</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jquery/">jquery</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js/">js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vuex/">vuex</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数式编程/">函数式编程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技巧/">技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/摄影/">摄影</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测试/">测试</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">一条奔跑在前端路上的学渣狗</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">怪人。</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.jpg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">怪人。</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                    <li><a href="/works/">作品</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:1185055083@qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/mfx55" title="GitHub"></a>
+                            
+                                <a class="fa 博客园" target="_blank" href="https://home.cnblogs.com/u/chenluomenggongzi/" title="博客园"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-node爬取数据" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/05/24/node爬取数据/" class="article-date">
+      <time datetime="2017-05-24T09:58:52.000Z" itemprop="datePublished">2017-05-24</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      node爬取数据
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/node/">node</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>初衷是自己想写个网站，无奈没数据，便自己写个“偷数据”的js</p>
+<p><excerpt in="" index="" |="" 首页摘要=""><br><a id="more"></a></excerpt></p>
+<h2 id="初始踩坑"><a href="#初始踩坑" class="headerlink" title="初始踩坑"></a>初始踩坑</h2><p>初始想法是，使用中间件request获取数据，在将数据遍历，用中间件fs的api createWriteStream逐条写入。</p>
+<p>无奈，总是提示错误 write after end</p>
+<p>卒！</p>
+<h2 id="最终代码"><a href="#最终代码" class="headerlink" title="最终代码"></a>最终代码</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">'use strict'</span>;</span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"><span class="keyword">var</span> request = <span class="built_in">require</span>(<span class="string">'request-promise'</span>);</span><br><span class="line"><span class="keyword">var</span> writeStream = fs.createWriteStream(<span class="string">'index.json'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取数据条数</span></span><br><span class="line"><span class="keyword">var</span> num = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">	<span class="keyword">var</span> arr = [];</span><br><span class="line">	<span class="keyword">var</span> url;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">1</span>;i&lt;num;i++)&#123;</span><br><span class="line">		url = <span class="string">'http:www.***.com&amp;index='</span>+i;</span><br><span class="line">		request(url).then(<span class="function">(<span class="params">data</span>)=&gt;</span>&#123;</span><br><span class="line">			arr.push(data);</span><br><span class="line">		&#125;).then(<span class="function">(<span class="params">result</span>)=&gt;</span>&#123;</span><br><span class="line">		    <span class="keyword">if</span>(i==(num<span class="number">-1</span>)) resolve(arr);</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;).then(<span class="function">(<span class="params">result</span>)=&gt;</span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(result);</span><br><span class="line">	writeStream.write(result.toString(),<span class="string">'UTF8'</span>);</span><br><span class="line">	writeStream.on(<span class="string">'finish'</span>,()=&gt;&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'写入完成'</span>);</span><br><span class="line">	&#125;);</span><br><span class="line">	writeStream.on(<span class="string">'error'</span>,()=&gt;&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">'写入错误'</span>);</span><br><span class="line">	&#125;);</span><br><span class="line">	writeStream.end();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="promise"><a href="#promise" class="headerlink" title="promise"></a>promise</h3><p>极其同意网上的一种说法，他其实是假的同步，本质还是异步<br>所以这里使用 if(i==(num-1)) resolve(arr); 来保证数据获取完毕</p>
+<p>简要说明几点</p>
+<blockquote>
+<ul>
+<li>数据传递用的是 resolve ，从而实现了假的同步</li>
+<li>reject用于处理错误</li>
+</ul>
+</blockquote>
+<p>贴个网址 <a href="https://wohugb.gitbooks.io/promise/content/introduction/index.html" target="_blank" rel="noopener">Promise Book</a></p>
+<h3 id="let"><a href="#let" class="headerlink" title="let"></a>let</h3><p>注意这个for循环声明循环变量用的是<code>let</code>不是var,这里并不是说var实现不了，而是使用var的话得使用闭包，才能保证程序的正确运行。</p>
+<p>为什么用了let就可以不用闭包呢？</p>
+<p>let声明的变量只在自己的    <code>块级作用域</code>（该作用域是es6新增的）有效。</p>
+<p>那为什么var就不行呢？</p>
+<p>当然，我可以回答，它没有块作用域的概念，只有自己的局部作用域的啦。显然这样回答，肯定会一脸懵逼。。<br>具体原因，这里简要说说，要从for循环讲起，js的for循环有两个作用域，一个外部循环，一个内部表达式。每次循环，从循环出取得值压入栈中，内部的表达式每次执行再从这个栈中获取数值，在进行相应的处理并输出。使用var，如本例这种异步请求（可简单记为 耗时请求），向栈中获取数据只能获取到最后的一个数据，也就只能获取一条数据了，（题外话，这也就是常考的闭包问题）。用了let，循环处就有了自己的<code>块级作用域</code>，而块级作用域只对该块有效，也就是说异步请求中表达式处理的循环变量都是不同块中的值，互不影响，也就有了多条数值。</p>
+<h3 id="writeStream-write"><a href="#writeStream-write" class="headerlink" title="writeStream.write"></a>writeStream.write</h3><p>写入的数据貌似只能是String类型，这里直接传递result,会报错（好坑啊！好坑啊！好坑啊！）,所以要使用toString api使其类型转换。</p>
+<h2 id="不足之处"><a href="#不足之处" class="headerlink" title="不足之处"></a>不足之处</h2><blockquote>
+<ul>
+<li>获取的网址接口必须是类似 http:www.***.com&amp;index=1 这种的。根据index的值累加获取不同数据的。</li>
+<li>获取的数据没按着顺序，感觉应该是异步的原因，暂时未解决。</li>
+</ul>
+</blockquote>
+<the rest="" of="" contents="" |="" 余下全文=""></the>
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/05/24/node爬取数据/">node爬取数据</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">怪人。</a></p>
+        <p><span>发布时间:</span>2017-05-24, 17:58:52</p>
+        <p><span>最后更新:</span>2017-06-01, 13:57:32</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/05/24/node爬取数据/" title="node爬取数据">http://yoursite.com/2017/05/24/node爬取数据/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/05/24/node爬取数据/　　作者: 怪人。" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/06/01/python爬取数据/">
+                    python爬取数据
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/05/12/vuex简单使用说明/">
+                    vuex简单使用说明
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#初始踩坑"><span class="toc-number">1.</span> <span class="toc-text">初始踩坑</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最终代码"><span class="toc-number">2.</span> <span class="toc-text">最终代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#promise"><span class="toc-number">2.1.</span> <span class="toc-text">promise</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#let"><span class="toc-number">2.2.</span> <span class="toc-text">let</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#writeStream-write"><span class="toc-number">2.3.</span> <span class="toc-text">writeStream.write</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#不足之处"><span class="toc-number">3.</span> <span class="toc-text">不足之处</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-4 i,
+        .toc-level-4 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"node爬取数据　| xu　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2017/05/24/node爬取数据/" data-title="node爬取数据" data-url="http://yoursite.com/2017/05/24/node爬取数据/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"undefined"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//oo6bpvt6y.bkt.clouddn.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+    </script>
+    
+    <script> loadComment(); </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/06/01/python爬取数据/" title="上一篇: python爬取数据">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/05/12/vuex简单使用说明/" title="下一篇: vuex简单使用说明">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2018/11/18/摄影入门/">摄影入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/04/20/vue基础/">vue基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/29/字典技巧/">字典技巧</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/03/29/reduce方法/">reduce</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/05/python识别图片中的文字/">python识别图片中的文字</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/01/python爬取图片/">python爬取图片</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/01/python爬取数据/">python爬取数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/24/node爬取数据/">node爬取数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/12/vuex简单使用说明/">vuex简单使用说明</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/09/node-express结合vue-cli开发之初始环境搭建/">node-express结合vue-cli开发之初始环境搭建</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/28/从客户端看git命令/">从客户端看git命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/25/css3轨迹动画/">css3轨迹动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/24/git建库、修改、提交/">git从建库到提交</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/18/链式写法/">链式写法</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/13/animation和transition/">animation和transition</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/13/3D动画/">3D动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/12/文字超出两行用省略号显示/">文字超出两行用省略号显示</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/12/before和after的强大/">before和after的强大</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/12/关于json的理解/">关于json的理解</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/12/淘宝初始化css代码/">淘宝初始化css代码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/12/cookie/">cookie</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/12/任性不用for/">任性不用for，if</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/12/li布局问题/">li布局问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/纯CSS实现点击/">纯CSS实现点击</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/js中的apply和call/">js中的apply和call</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/不同随机数/">不同随机数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/时钟/">时钟</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/等待条/">等待条</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/深度克隆/">深度克隆</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/数组重排/">数组重排</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/函数式编程/">函数式编程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/hexo命令/">hexo命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/11/codepen/">codeopen试验</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/10/markdown/">markdown基础语法</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2018 怪人。
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+             tags: ".article-tag a", 
+             categories: ".article-category a, a.tag-list-link", 
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
