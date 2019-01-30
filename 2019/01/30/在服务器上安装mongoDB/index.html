@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="关于codeopen的试验">
-<meta name="keywords" content="Hexo,测试">
+<meta name="description" content="在系统为centos6 64bit的服务器上搭建mongoDB">
+<meta name="keywords" content="mongoDB">
 <meta property="og:type" content="article">
-<meta property="og:title" content="codeopen试验">
-<meta property="og:url" content="http://yoursite.com/2017/04/11/codepen/index.html">
+<meta property="og:title" content="在服务器上安装mongoDB">
+<meta property="og:url" content="http://yoursite.com/2019/01/30/在服务器上安装mongoDB/index.html">
 <meta property="og:site_name" content="WeirdoPho">
-<meta property="og:description" content="关于codeopen的试验">
+<meta property="og:description" content="在系统为centos6 64bit的服务器上搭建mongoDB">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-04-11T09:46:35.000Z">
+<meta property="og:updated_time" content="2019-01-30T08:42:15.439Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="codeopen试验">
-<meta name="twitter:description" content="关于codeopen的试验">
+<meta name="twitter:title" content="在服务器上安装mongoDB">
+<meta name="twitter:description" content="在系统为centos6 64bit的服务器上搭建mongoDB">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>codeopen试验 | WeirdoPho</title>
+<title>在服务器上安装mongoDB | WeirdoPho</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -269,11 +269,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-codepen" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-在服务器上安装mongoDB" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/04/11/codepen/" class="article-date">
-      <time datetime="2017-04-11T03:17:14.000Z" itemprop="datePublished">2017-04-11</time>
+      <a href="/2019/01/30/在服务器上安装mongoDB/" class="article-date">
+      <time datetime="2019-01-30T08:40:39.000Z" itemprop="datePublished">2019-01-30</time>
 </a>
 
 
@@ -288,7 +288,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      codeopen试验
+      在服务器上安装mongoDB
     </h1>
   
 
@@ -297,13 +297,13 @@
       <div class="article-info article-info-post">
         
     <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/Hexo/">Hexo</a>
+    <a class="article-category-link" href="/categories/服务器/">服务器</a>
     </div>
 
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/测试/">测试</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongoDB/">mongoDB</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -313,12 +313,19 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>关于codeopen的试验</p>
+        <p>在系统为centos6 64bit的服务器上搭建mongoDB</p>
 <p><excerpt in="" index="" |="" 首页摘要=""><br><a id="more"></a></excerpt></p>
-<p></p><p data-height="557" data-theme-id="7928" data-slug-hash="BRBygN" data-default-tab="result" class="codepen">See the Pen <a href="http://codepen.io/codingxu/pen/BRBygN" target="_blank" rel="noopener">BRBygN</a> by TimNew (<a href="http://codepen.io/timnew" target="_blank" rel="noopener">@timnew</a>) on <a href="http://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p><p></p>
-<script async src="//codepen.io/assets/embed/ei.js"></script>
+<h3 id="创建文件"><a href="#创建文件" class="headerlink" title="创建文件"></a>创建文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/yum.repos.d/mongodb-org-3.4.repo</span><br></pre></td></tr></table></figure>
+<p>然后写入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[mongodb-org-3.4]</span><br><span class="line">name=MongoDB Repository</span><br><span class="line">baseurl=https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/3.4/x86_64/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=1</span><br><span class="line">gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc</span><br></pre></td></tr></table></figure></p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y mongodb-org</span><br></pre></td></tr></table></figure>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/mongod.conf</span><br></pre></td></tr></table></figure>
+<p>修改127.0.0.1为<code>0.0.0.0</code>，使得所有机器可连</p>
+<h3 id="mongo相关操作"><a href="#mongo相关操作" class="headerlink" title="mongo相关操作"></a>mongo相关操作</h3><ul>
+<li>启动：service mongod start</li>
+<li>停止：service mongod stop</li>
+<li>重启：service mongod restart</li>
+</ul>
 
-<the rest="" of="" contents="" |="" 余下全文=""></the>
       
     </div>
     
@@ -326,13 +333,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/04/11/codepen/">codeopen试验</a></p>
+        <p><span>本文标题:</span><a href="/2019/01/30/在服务器上安装mongoDB/">在服务器上安装mongoDB</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">WeirdoPho</a></p>
-        <p><span>发布时间:</span>2017-04-11, 11:17:14</p>
-        <p><span>最后更新:</span>2017-04-11, 17:46:35</p>
+        <p><span>发布时间:</span>2019-01-30, 16:40:39</p>
+        <p><span>最后更新:</span>2019-01-30, 16:42:15</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/04/11/codepen/" title="codeopen试验">http://yoursite.com/2017/04/11/codepen/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/04/11/codepen/　　作者: WeirdoPho" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2019/01/30/在服务器上安装mongoDB/" title="在服务器上安装mongoDB">http://yoursite.com/2019/01/30/在服务器上安装mongoDB/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2019/01/30/在服务器上安装mongoDB/　　作者: WeirdoPho" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -344,16 +351,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/04/11/hexo命令/">
-                    hexo命令
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/04/10/markdown/">
-                    markdown基础语法
+                <a href="/2019/01/30/nginx搭建图片静态服务器/">
+                    nginx搭建图片静态服务器
                 </a>
             </div>
         
@@ -365,7 +366,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建文件"><span class="toc-number">1.</span> <span class="toc-text">创建文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-number">2.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置"><span class="toc-number">3.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mongo相关操作"><span class="toc-number">4.</span> <span class="toc-text">mongo相关操作</span></a></li></ol>
         
     </div>
     <style>
@@ -401,7 +402,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"codeopen试验　| WeirdoPho　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"在服务器上安装mongoDB　| WeirdoPho　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -417,7 +418,7 @@
     
       <div class="duoshuo" id="comments">
     <div id="comment-box" ></div>
-    <div class="ds-thread" id="ds-thread" data-thread-key="2017/04/11/codepen/" data-title="codeopen试验" data-url="http://yoursite.com/2017/04/11/codepen/"></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2019/01/30/在服务器上安装mongoDB/" data-title="在服务器上安装mongoDB" data-url="http://yoursite.com/2019/01/30/在服务器上安装mongoDB/"></div>
     <script>
         var duoshuoQuery = {short_name:"undefined"};
         var loadComment = function(){
@@ -440,15 +441,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/04/11/hexo命令/" title="上一篇: hexo命令">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/04/10/markdown/" title="下一篇: markdown基础语法">
+            <a href="/2019/01/30/nginx搭建图片静态服务器/" title="下一篇: nginx搭建图片静态服务器">
                 <i class="fa fa-angle-right"></i>
             </a>
         
