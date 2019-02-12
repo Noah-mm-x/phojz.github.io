@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-01-30T08:42:15.439Z</updated>
+  <updated>2019-02-12T04:19:53.433Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>线上部署代码</title>
+    <link href="http://yoursite.com/2019/02/12/%E7%BA%BF%E4%B8%8A%E9%83%A8%E7%BD%B2%E4%BB%A3%E7%A0%81/"/>
+    <id>http://yoursite.com/2019/02/12/线上部署代码/</id>
+    <published>2019-02-12T04:13:15.000Z</published>
+    <updated>2019-02-12T04:19:53.433Z</updated>
+    
+    <content type="html"><![CDATA[<p>将代码部署到线上</p><p><excerpt in="" index="" |="" 首页摘要=""><br><a id="more"></a></excerpt></p><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本篇文章主要讲解<code>如何将已写好的项目部署到线上</code></p><p>涉及到的技术栈：<code>koa、vue、vue-cli、mongo、pm2、nginx</code></p><p>总体思路：将代码上传到gitHub上，每次修改完成上传后，服务器端只需要拉去代码，并执行压缩等操作，部署到线上。</p><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="前端配置"><a href="#前端配置" class="headerlink" title="前端配置"></a>前端配置</h3><p>这里的配置主要涉及到判断是否是线上从而来确定接口地址</p><p>代码如下：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">axios.defaults.baseURL = process.env.NODE_ENV == <span class="string">'development'</span> ? <span class="string">'http://localhost:3000'</span> : <span class="string">'/api'</span>;</span><br></pre></td></tr></table></figure><p>线上接口带上<code>api</code>,从而区分地址打开的是页面还是接口</p><h3 id="后端配置"><a href="#后端配置" class="headerlink" title="后端配置"></a>后端配置</h3><p>这里的配置主要是改成连接线上数据库</p><p>原始：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> db = <span class="keyword">new</span> Monk(<span class="string">"localhost:27017/games"</span>); <span class="comment">//链接到库</span></span><br></pre></td></tr></table></figure><p>修改后</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> db = <span class="keyword">new</span> Monk(<span class="string">"你的域名/games"</span>); <span class="comment">//链接到库</span></span><br></pre></td></tr></table></figure><h3 id="nginx配置"><a href="#nginx配置" class="headerlink" title="nginx配置"></a><a name="nginx">nginx配置</a></h3><p>代码如下：</p><p>前端页面：</p><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> / &#123;</span><br><span class="line">    <span class="attribute">root</span>   /home/website/koa-vue-mongodb/front/dist;</span><br><span class="line">    <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>接口配置：<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> /api &#123;</span><br><span class="line">     <span class="attribute">rewrite</span> <span class="regexp"> ^/api/(.*)$</span> /<span class="variable">$1</span> <span class="literal">break</span>;</span><br><span class="line">     <span class="attribute">proxy_pass</span>   http://127.0.0.1:3000;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>简单说明：将接口<code>/api/getData</code>实际指向<code>http://127.0.0.1:3000/getData</code></p><h2 id="整体流程"><a href="#整体流程" class="headerlink" title="整体流程"></a>整体流程</h2><ol><li>本地代码上传到GitHub上</li><li>服务器在home文件夹下新建website文件夹并打开</li><li>克隆项目到此文件夹</li><li>前后端分别执行<code>npm install</code>,安装必要文件</li><li>进入后端代码，执行<code>pm2 start app.js --watch -f</code>,来保证服务一直开启,首次不需要加<code>-f</code></li><li>进入前端代码，执行<code>node build/build.js</code>,打包代码</li><li>配置nginx,写入上述 <a href="#nginx">nginx配置</a> ,首页指向前端打包后的代码</li><li>打开你的网址，便能看到结果</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;将代码部署到线上&lt;/p&gt;
+&lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;
+    
+    </summary>
+    
+      <category term="服务器" scheme="http://yoursite.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    
+    
+      <category term="线上部署" scheme="http://yoursite.com/tags/%E7%BA%BF%E4%B8%8A%E9%83%A8%E7%BD%B2/"/>
+    
+  </entry>
   
   <entry>
     <title>在服务器上安装mongoDB</title>
@@ -44,7 +67,7 @@
     <link href="http://yoursite.com/2019/01/30/nginx%E6%90%AD%E5%BB%BA%E5%9B%BE%E7%89%87%E9%9D%99%E6%80%81%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
     <id>http://yoursite.com/2019/01/30/nginx搭建图片静态服务器/</id>
     <published>2019-01-30T08:04:13.000Z</published>
-    <updated>2019-01-30T08:41:51.371Z</updated>
+    <updated>2019-02-12T04:16:25.821Z</updated>
     
     <content type="html"><![CDATA[<p>在系统为centos6 64bit的服务器上搭建nginx</p><p><excerpt in="" index="" |="" 首页摘要=""><br><a id="more"></a></excerpt></p><h3 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h3><h4 id="创建配置文件"><a href="#创建配置文件" class="headerlink" title="创建配置文件"></a>创建配置文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/yum.repos.d</span><br><span class="line">vi nginx.repo</span><br></pre></td></tr></table></figure><h4 id="输入如下配置"><a href="#输入如下配置" class="headerlink" title="输入如下配置"></a>输入如下配置</h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[nginx]</span><br><span class="line"><span class="attribute">name</span> = nginx repo</span><br><span class="line">baseurl = http://nginx.org/packages/centos/6/<span class="variable">$basearch</span></span><br><span class="line">gpgcheck = <span class="number">0</span></span><br><span class="line">enabled = <span class="number">1</span></span><br></pre></td></tr></table></figure><h4 id="安装命令"><a href="#安装命令" class="headerlink" title="安装命令"></a>安装命令</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install nginx -y</span><br></pre></td></tr></table></figure><h4 id="备注"><a href="#备注" class="headerlink" title="备注"></a>备注</h4><p>nginx启动：<code>service nginx start</code></p><p>nginx停止：<code>service nginx stop</code></p><p>查看状态：<code>service nginx status</code></p><h3 id="配置端口"><a href="#配置端口" class="headerlink" title="配置端口"></a>配置端口</h3><h4 id="开启端口"><a href="#开启端口" class="headerlink" title="开启端口"></a>开启端口</h4><p><code>iptables -A INPUT -p tcp --dport 8080 -j ACCEPT</code></p><h4 id="保存并重启防火墙"><a href="#保存并重启防火墙" class="headerlink" title="保存并重启防火墙"></a>保存并重启防火墙</h4><p><code>/etc/rc.d/init.d/iptables save</code></p><p><code>/etc/init.d/iptables restart</code></p><h4 id="打开49152-65534之间的端口"><a href="#打开49152-65534之间的端口" class="headerlink" title="打开49152~65534之间的端口"></a>打开49152~65534之间的端口</h4><p><code>iptables -A INPUT -p tcp --dport 49152:65534 -j ACCEPT</code></p><h4 id="保存修改后重启防火墙"><a href="#保存修改后重启防火墙" class="headerlink" title="保存修改后重启防火墙"></a>保存修改后重启防火墙</h4><p><code>service iptables restart</code></p><h3 id="访问配置"><a href="#访问配置" class="headerlink" title="访问配置"></a>访问配置</h3><h4 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h4><p>创建用户：<code>user add hexo</code></p><p>设置密码：<code>passwd hexo</code><br>然后输入密码，并确认密码</p><p>结果：在home文件夹下就会生成mfx文件夹</p><h4 id="创建静态资源文件夹"><a href="#创建静态资源文件夹" class="headerlink" title="创建静态资源文件夹"></a>创建静态资源文件夹</h4><p>切换到hexo<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir www</span><br><span class="line">mkdir images</span><br></pre></td></tr></table></figure></p><p>修改下文件夹权限</p><p>chmod 777 hexo -R</p><p>数字7不多做解释，表示r(4:读) w(2:写) x(1:执行)</p><h4 id="修改nginx配置文件"><a href="#修改nginx配置文件" class="headerlink" title="修改nginx配置文件"></a>修改nginx配置文件</h4><p><img src="http://www.mfx55.top/images/WX20190130-144248%402x.png" alt="图片说明"></p><p>写入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">location /images/ &#123;</span><br><span class="line">    root /home/hexo/www;</span><br><span class="line">    autoindex on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>说明：</p><p><code>/images/</code>：访问地址，配置后访问地址为 mfx55.top/images</p><p><code>root /home/hexo/www;</code>：具体访问的路径，如访问mfx55.top/images/index.html 则是访问服务器的 /home/hexo/www/images/index.html</p><p><code>autoindex on;</code>：让你可以浏览这个资源</p><p>然后执行 <code>nginx -s reload</code></p><p>在/home/www/images/下创建index.html，便可以访问了 <a href="www.mfx55.top/images/index.html">www.mfx55.top/images/index.html</a></p>]]></content>
     
@@ -184,31 +207,6 @@
   </entry>
   
   <entry>
-    <title>reduce</title>
-    <link href="http://yoursite.com/2018/03/29/reduce%E6%96%B9%E6%B3%95/"/>
-    <id>http://yoursite.com/2018/03/29/reduce方法/</id>
-    <published>2018-03-28T16:00:00.000Z</published>
-    <updated>2018-03-30T03:31:21.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>API之reduce</p><p><excerpt in="" index="" |="" 首页摘要=""><br><a id="more"></a></excerpt></p><p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce_clone#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9%E6%80%A7" target="_blank" rel="noopener">Mozilla</a></p><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>学习API，起码得了解3点</p><ul><li>兼容性</li><li>用法</li><li>使用场合</li></ul><p>下面对这3点简要说明</p><h2 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h2><h3 id="PC"><a href="#PC" class="headerlink" title="PC:"></a>PC:</h3><table><thead><tr><th style="text-align:center">Chrome</th><th style="text-align:center">Firefox (Gecko)</th><th style="text-align:center">Internet Explorer</th><th style="text-align:center">Opera</th><th style="text-align:center">Safari</th></tr></thead><tbody><tr><td style="text-align:center">(Yes)</td><td style="text-align:center">3.0 (1.9)</td><td style="text-align:center">9</td><td style="text-align:center">10.5</td><td style="text-align:center">4.0</td></tr></tbody></table><h3 id="Mobile"><a href="#Mobile" class="headerlink" title="Mobile:"></a>Mobile:</h3><table><thead><tr><th style="text-align:center">Android</th><th style="text-align:center">Chrome for Android</th><th style="text-align:center">Firefox Mobile (Gecko)</th><th style="text-align:center">Opera Mobile</th><th style="text-align:center">Safari Mobile</th></tr></thead><tbody><tr><td style="text-align:center">(Yes)</td><td style="text-align:center">(Yes)</td><td style="text-align:center">(Yes)</td><td style="text-align:center">(Yes)</td><td style="text-align:center">(Yes) </td></tr></tbody></table><h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><blockquote><p>语法：arr.reduce([callback, initialValue])</p></blockquote><p>参数</p><ul><li>callback <ul><li>previousValue 上一次调用函数的返回值，或者是提供的初始值（initialValue）</li><li>currentValue 当前被处理的元素</li><li>currentIndex 当前被处理元素在数组中的索引, 即currentValue的索引.如果有initialValue初始值, 从0开始.如果没有从1开始.</li><li>array 源数组</li></ul></li><li>initialValue 可选参数, 作为第一次调用 callback 的第一个参数。</li></ul><h2 id="使用场合"><a href="#使用场合" class="headerlink" title="使用场合"></a>使用场合</h2><blockquote><p>数组累加</p></blockquote><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr =[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>];</span><br><span class="line"><span class="keyword">var</span> result = arr.reduce(add,<span class="number">0</span>) <span class="comment">//10</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">pre,cur</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> pre + cur;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><blockquote><p>计算数组重复项</p></blockquote><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'a'</span>,<span class="string">'v'</span>,<span class="string">'c'</span>,<span class="string">'e'</span>,<span class="string">'e'</span>,<span class="string">'a'</span>];</span><br><span class="line"><span class="keyword">var</span> cal = arr.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">    a[b] =  a[b] ? ++a[b] : <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;,&#123;&#125;)</span><br><span class="line">cal; <span class="comment">//&#123;a: 3, b: 1, c: 2, v: 1, e: 2&#125;</span></span><br></pre></td></tr></table></figure><p>个人总结：理解这个API，首先应着重理解参数 <code>previousValue</code> 和 <code>initialValue</code>。previousValue，函数没执行时，存储的是第一个值，执行后，存储的是函数执行的返回值，即累计处理的值。initialValue，他的意义在于，给个默认值。避免为空。</p><the rest="" of="" contents="" |="" 余下全文=""></the>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;API之reduce&lt;/p&gt;
-&lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;
-    
-    </summary>
-    
-      <category term="前端" scheme="http://yoursite.com/categories/%E5%89%8D%E7%AB%AF/"/>
-    
-    
-      <category term="js" scheme="http://yoursite.com/tags/js/"/>
-    
-      <category term="技巧" scheme="http://yoursite.com/tags/%E6%8A%80%E5%B7%A7/"/>
-    
-  </entry>
-  
-  <entry>
     <title>字典技巧</title>
     <link href="http://yoursite.com/2018/03/29/%E5%AD%97%E5%85%B8%E6%8A%80%E5%B7%A7/"/>
     <id>http://yoursite.com/2018/03/29/字典技巧/</id>
@@ -227,9 +225,34 @@
       <category term="前端" scheme="http://yoursite.com/categories/%E5%89%8D%E7%AB%AF/"/>
     
     
+      <category term="技巧" scheme="http://yoursite.com/tags/%E6%8A%80%E5%B7%A7/"/>
+    
       <category term="js" scheme="http://yoursite.com/tags/js/"/>
     
+  </entry>
+  
+  <entry>
+    <title>reduce</title>
+    <link href="http://yoursite.com/2018/03/29/reduce%E6%96%B9%E6%B3%95/"/>
+    <id>http://yoursite.com/2018/03/29/reduce方法/</id>
+    <published>2018-03-28T16:00:00.000Z</published>
+    <updated>2018-03-30T03:31:21.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>API之reduce</p><p><excerpt in="" index="" |="" 首页摘要=""><br><a id="more"></a></excerpt></p><p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce_clone#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9%E6%80%A7" target="_blank" rel="noopener">Mozilla</a></p><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>学习API，起码得了解3点</p><ul><li>兼容性</li><li>用法</li><li>使用场合</li></ul><p>下面对这3点简要说明</p><h2 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h2><h3 id="PC"><a href="#PC" class="headerlink" title="PC:"></a>PC:</h3><table><thead><tr><th style="text-align:center">Chrome</th><th style="text-align:center">Firefox (Gecko)</th><th style="text-align:center">Internet Explorer</th><th style="text-align:center">Opera</th><th style="text-align:center">Safari</th></tr></thead><tbody><tr><td style="text-align:center">(Yes)</td><td style="text-align:center">3.0 (1.9)</td><td style="text-align:center">9</td><td style="text-align:center">10.5</td><td style="text-align:center">4.0</td></tr></tbody></table><h3 id="Mobile"><a href="#Mobile" class="headerlink" title="Mobile:"></a>Mobile:</h3><table><thead><tr><th style="text-align:center">Android</th><th style="text-align:center">Chrome for Android</th><th style="text-align:center">Firefox Mobile (Gecko)</th><th style="text-align:center">Opera Mobile</th><th style="text-align:center">Safari Mobile</th></tr></thead><tbody><tr><td style="text-align:center">(Yes)</td><td style="text-align:center">(Yes)</td><td style="text-align:center">(Yes)</td><td style="text-align:center">(Yes)</td><td style="text-align:center">(Yes) </td></tr></tbody></table><h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><blockquote><p>语法：arr.reduce([callback, initialValue])</p></blockquote><p>参数</p><ul><li>callback <ul><li>previousValue 上一次调用函数的返回值，或者是提供的初始值（initialValue）</li><li>currentValue 当前被处理的元素</li><li>currentIndex 当前被处理元素在数组中的索引, 即currentValue的索引.如果有initialValue初始值, 从0开始.如果没有从1开始.</li><li>array 源数组</li></ul></li><li>initialValue 可选参数, 作为第一次调用 callback 的第一个参数。</li></ul><h2 id="使用场合"><a href="#使用场合" class="headerlink" title="使用场合"></a>使用场合</h2><blockquote><p>数组累加</p></blockquote><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr =[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>];</span><br><span class="line"><span class="keyword">var</span> result = arr.reduce(add,<span class="number">0</span>) <span class="comment">//10</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">pre,cur</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> pre + cur;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><blockquote><p>计算数组重复项</p></blockquote><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'a'</span>,<span class="string">'v'</span>,<span class="string">'c'</span>,<span class="string">'e'</span>,<span class="string">'e'</span>,<span class="string">'a'</span>];</span><br><span class="line"><span class="keyword">var</span> cal = arr.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">    a[b] =  a[b] ? ++a[b] : <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;,&#123;&#125;)</span><br><span class="line">cal; <span class="comment">//&#123;a: 3, b: 1, c: 2, v: 1, e: 2&#125;</span></span><br></pre></td></tr></table></figure><p>个人总结：理解这个API，首先应着重理解参数 <code>previousValue</code> 和 <code>initialValue</code>。previousValue，函数没执行时，存储的是第一个值，执行后，存储的是函数执行的返回值，即累计处理的值。initialValue，他的意义在于，给个默认值。避免为空。</p><the rest="" of="" contents="" |="" 余下全文=""></the>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;API之reduce&lt;/p&gt;
+&lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;
+    
+    </summary>
+    
+      <category term="前端" scheme="http://yoursite.com/categories/%E5%89%8D%E7%AB%AF/"/>
+    
+    
       <category term="技巧" scheme="http://yoursite.com/tags/%E6%8A%80%E5%B7%A7/"/>
+    
+      <category term="js" scheme="http://yoursite.com/tags/js/"/>
     
   </entry>
   
@@ -512,29 +535,6 @@
       <category term="js" scheme="http://yoursite.com/tags/js/"/>
     
       <category term="函数式编程" scheme="http://yoursite.com/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>animation和transition</title>
-    <link href="http://yoursite.com/2017/04/13/animation%E5%92%8Ctransition/"/>
-    <id>http://yoursite.com/2017/04/13/animation和transition/</id>
-    <published>2017-04-13T02:37:41.000Z</published>
-    <updated>2017-04-13T02:42:47.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>关于animation和transition两种CSS动画的个人理解</p><p><excerpt in="" index="" |="" 首页摘要=""><br><a id="more"></a></excerpt></p><h2 id="一语中的"><a href="#一语中的" class="headerlink" title="一语中的"></a>一语中的</h2><p><code>animation</code> 可以实现永远循环的动画<br><code>transition</code> 可以实现hover鼠标移除移入的动画</p><h2 id="屏气凝神"><a href="#屏气凝神" class="headerlink" title="屏气凝神"></a>屏气凝神</h2><ul><li>transform的行使对象应该是<code>块级元素</code></li><li>写hover动画的时候，默然对象状态要有和hover状态中与之对应的属性，例子：如果hover里面有left:30px,对应的原始状态里面也应该有left:0;</li><li>初始状态中有rotate(90deg),再在hover里面写rotate(0deg)，hover后目标元素应该是保持其应有的状态（这里指角度），而不是其应有状态在旋转-90度，移动，缩放等同理</li><li>动画有时候会设置旋转点，而这个设置应该在本身样式里面设置，而不是在hover里面设置。</li></ul><the rest="" of="" contents="" |="" 余下全文=""></the>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;关于animation和transition两种CSS动画的个人理解&lt;/p&gt;
-&lt;p&gt;&lt;excerpt in=&quot;&quot; index=&quot;&quot; |=&quot;&quot; 首页摘要=&quot;&quot;&gt;&lt;br&gt;
-    
-    </summary>
-    
-      <category term="前端" scheme="http://yoursite.com/categories/%E5%89%8D%E7%AB%AF/"/>
-    
-    
-      <category term="css" scheme="http://yoursite.com/tags/css/"/>
     
   </entry>
   

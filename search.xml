@@ -3,6 +3,27 @@
   
     
     <entry>
+      <title>线上部署代码</title>
+      <link href="/2019/02/12/%E7%BA%BF%E4%B8%8A%E9%83%A8%E7%BD%B2%E4%BB%A3%E7%A0%81/"/>
+      <url>/2019/02/12/%E7%BA%BF%E4%B8%8A%E9%83%A8%E7%BD%B2%E4%BB%A3%E7%A0%81/</url>
+      <content type="html"><![CDATA[<p>将代码部署到线上</p><p><excerpt in="" index="" |="" 首页摘要=""><br><a id="more"></a></excerpt></p><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本篇文章主要讲解<code>如何将已写好的项目部署到线上</code></p><p>涉及到的技术栈：<code>koa、vue、vue-cli、mongo、pm2、nginx</code></p><p>总体思路：将代码上传到gitHub上，每次修改完成上传后，服务器端只需要拉去代码，并执行压缩等操作，部署到线上。</p><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="前端配置"><a href="#前端配置" class="headerlink" title="前端配置"></a>前端配置</h3><p>这里的配置主要涉及到判断是否是线上从而来确定接口地址</p><p>代码如下：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">axios.defaults.baseURL = process.env.NODE_ENV == <span class="string">'development'</span> ? <span class="string">'http://localhost:3000'</span> : <span class="string">'/api'</span>;</span><br></pre></td></tr></table></figure><p>线上接口带上<code>api</code>,从而区分地址打开的是页面还是接口</p><h3 id="后端配置"><a href="#后端配置" class="headerlink" title="后端配置"></a>后端配置</h3><p>这里的配置主要是改成连接线上数据库</p><p>原始：</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> db = <span class="keyword">new</span> Monk(<span class="string">"localhost:27017/games"</span>); <span class="comment">//链接到库</span></span><br></pre></td></tr></table></figure><p>修改后</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> db = <span class="keyword">new</span> Monk(<span class="string">"你的域名/games"</span>); <span class="comment">//链接到库</span></span><br></pre></td></tr></table></figure><h3 id="nginx配置"><a href="#nginx配置" class="headerlink" title="nginx配置"></a><a name="nginx">nginx配置</a></h3><p>代码如下：</p><p>前端页面：</p><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> / &#123;</span><br><span class="line">    <span class="attribute">root</span>   /home/website/koa-vue-mongodb/front/dist;</span><br><span class="line">    <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>接口配置：<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> /api &#123;</span><br><span class="line">     <span class="attribute">rewrite</span> <span class="regexp"> ^/api/(.*)$</span> /<span class="variable">$1</span> <span class="literal">break</span>;</span><br><span class="line">     <span class="attribute">proxy_pass</span>   http://127.0.0.1:3000;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>简单说明：将接口<code>/api/getData</code>实际指向<code>http://127.0.0.1:3000/getData</code></p><h2 id="整体流程"><a href="#整体流程" class="headerlink" title="整体流程"></a>整体流程</h2><ol><li>本地代码上传到GitHub上</li><li>服务器在home文件夹下新建website文件夹并打开</li><li>克隆项目到此文件夹</li><li>前后端分别执行<code>npm install</code>,安装必要文件</li><li>进入后端代码，执行<code>pm2 start app.js --watch -f</code>,来保证服务一直开启,首次不需要加<code>-f</code></li><li>进入前端代码，执行<code>node build/build.js</code>,打包代码</li><li>配置nginx,写入上述 <a href="#nginx">nginx配置</a> ,首页指向前端打包后的代码</li><li>打开你的网址，便能看到结果</li></ol>]]></content>
+      
+      <categories>
+          
+          <category> 服务器 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 线上部署 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>在服务器上安装mongoDB</title>
       <link href="/2019/01/30/%E5%9C%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E5%AE%89%E8%A3%85mongoDB/"/>
       <url>/2019/01/30/%E5%9C%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E5%AE%89%E8%A3%85mongoDB/</url>
@@ -154,29 +175,6 @@
     </entry>
     
     <entry>
-      <title>reduce</title>
-      <link href="/2018/03/29/reduce%E6%96%B9%E6%B3%95/"/>
-      <url>/2018/03/29/reduce%E6%96%B9%E6%B3%95/</url>
-      <content type="html"><![CDATA[<p>API之reduce</p><p><excerpt in="" index="" |="" 首页摘要=""><br><a id="more"></a></excerpt></p><p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce_clone#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9%E6%80%A7" target="_blank" rel="noopener">Mozilla</a></p><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>学习API，起码得了解3点</p><ul><li>兼容性</li><li>用法</li><li>使用场合</li></ul><p>下面对这3点简要说明</p><h2 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h2><h3 id="PC"><a href="#PC" class="headerlink" title="PC:"></a>PC:</h3><table><thead><tr><th style="text-align:center">Chrome</th><th style="text-align:center">Firefox (Gecko)</th><th style="text-align:center">Internet Explorer</th><th style="text-align:center">Opera</th><th style="text-align:center">Safari</th></tr></thead><tbody><tr><td style="text-align:center">(Yes)</td><td style="text-align:center">3.0 (1.9)</td><td style="text-align:center">9</td><td style="text-align:center">10.5</td><td style="text-align:center">4.0</td></tr></tbody></table><h3 id="Mobile"><a href="#Mobile" class="headerlink" title="Mobile:"></a>Mobile:</h3><table><thead><tr><th style="text-align:center">Android</th><th style="text-align:center">Chrome for Android</th><th style="text-align:center">Firefox Mobile (Gecko)</th><th style="text-align:center">Opera Mobile</th><th style="text-align:center">Safari Mobile</th></tr></thead><tbody><tr><td style="text-align:center">(Yes)</td><td style="text-align:center">(Yes)</td><td style="text-align:center">(Yes)</td><td style="text-align:center">(Yes)</td><td style="text-align:center">(Yes) </td></tr></tbody></table><h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><blockquote><p>语法：arr.reduce([callback, initialValue])</p></blockquote><p>参数</p><ul><li>callback <ul><li>previousValue 上一次调用函数的返回值，或者是提供的初始值（initialValue）</li><li>currentValue 当前被处理的元素</li><li>currentIndex 当前被处理元素在数组中的索引, 即currentValue的索引.如果有initialValue初始值, 从0开始.如果没有从1开始.</li><li>array 源数组</li></ul></li><li>initialValue 可选参数, 作为第一次调用 callback 的第一个参数。</li></ul><h2 id="使用场合"><a href="#使用场合" class="headerlink" title="使用场合"></a>使用场合</h2><blockquote><p>数组累加</p></blockquote><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr =[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>];</span><br><span class="line"><span class="keyword">var</span> result = arr.reduce(add,<span class="number">0</span>) <span class="comment">//10</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">pre,cur</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> pre + cur;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><blockquote><p>计算数组重复项</p></blockquote><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'a'</span>,<span class="string">'v'</span>,<span class="string">'c'</span>,<span class="string">'e'</span>,<span class="string">'e'</span>,<span class="string">'a'</span>];</span><br><span class="line"><span class="keyword">var</span> cal = arr.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">    a[b] =  a[b] ? ++a[b] : <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;,&#123;&#125;)</span><br><span class="line">cal; <span class="comment">//&#123;a: 3, b: 1, c: 2, v: 1, e: 2&#125;</span></span><br></pre></td></tr></table></figure><p>个人总结：理解这个API，首先应着重理解参数 <code>previousValue</code> 和 <code>initialValue</code>。previousValue，函数没执行时，存储的是第一个值，执行后，存储的是函数执行的返回值，即累计处理的值。initialValue，他的意义在于，给个默认值。避免为空。</p><the rest="" of="" contents="" |="" 余下全文=""></the>]]></content>
-      
-      <categories>
-          
-          <category> 前端 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> js </tag>
-            
-            <tag> 技巧 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    <entry>
       <title>字典技巧</title>
       <link href="/2018/03/29/%E5%AD%97%E5%85%B8%E6%8A%80%E5%B7%A7/"/>
       <url>/2018/03/29/%E5%AD%97%E5%85%B8%E6%8A%80%E5%B7%A7/</url>
@@ -191,9 +189,32 @@
       
         <tags>
             
+            <tag> 技巧 </tag>
+            
             <tag> js </tag>
             
+        </tags>
+      
+    </entry>
+    
+    <entry>
+      <title>reduce</title>
+      <link href="/2018/03/29/reduce%E6%96%B9%E6%B3%95/"/>
+      <url>/2018/03/29/reduce%E6%96%B9%E6%B3%95/</url>
+      <content type="html"><![CDATA[<p>API之reduce</p><p><excerpt in="" index="" |="" 首页摘要=""><br><a id="more"></a></excerpt></p><p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce_clone#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%85%BC%E5%AE%B9%E6%80%A7" target="_blank" rel="noopener">Mozilla</a></p><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>学习API，起码得了解3点</p><ul><li>兼容性</li><li>用法</li><li>使用场合</li></ul><p>下面对这3点简要说明</p><h2 id="兼容性"><a href="#兼容性" class="headerlink" title="兼容性"></a>兼容性</h2><h3 id="PC"><a href="#PC" class="headerlink" title="PC:"></a>PC:</h3><table><thead><tr><th style="text-align:center">Chrome</th><th style="text-align:center">Firefox (Gecko)</th><th style="text-align:center">Internet Explorer</th><th style="text-align:center">Opera</th><th style="text-align:center">Safari</th></tr></thead><tbody><tr><td style="text-align:center">(Yes)</td><td style="text-align:center">3.0 (1.9)</td><td style="text-align:center">9</td><td style="text-align:center">10.5</td><td style="text-align:center">4.0</td></tr></tbody></table><h3 id="Mobile"><a href="#Mobile" class="headerlink" title="Mobile:"></a>Mobile:</h3><table><thead><tr><th style="text-align:center">Android</th><th style="text-align:center">Chrome for Android</th><th style="text-align:center">Firefox Mobile (Gecko)</th><th style="text-align:center">Opera Mobile</th><th style="text-align:center">Safari Mobile</th></tr></thead><tbody><tr><td style="text-align:center">(Yes)</td><td style="text-align:center">(Yes)</td><td style="text-align:center">(Yes)</td><td style="text-align:center">(Yes)</td><td style="text-align:center">(Yes) </td></tr></tbody></table><h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><blockquote><p>语法：arr.reduce([callback, initialValue])</p></blockquote><p>参数</p><ul><li>callback <ul><li>previousValue 上一次调用函数的返回值，或者是提供的初始值（initialValue）</li><li>currentValue 当前被处理的元素</li><li>currentIndex 当前被处理元素在数组中的索引, 即currentValue的索引.如果有initialValue初始值, 从0开始.如果没有从1开始.</li><li>array 源数组</li></ul></li><li>initialValue 可选参数, 作为第一次调用 callback 的第一个参数。</li></ul><h2 id="使用场合"><a href="#使用场合" class="headerlink" title="使用场合"></a>使用场合</h2><blockquote><p>数组累加</p></blockquote><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr =[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>];</span><br><span class="line"><span class="keyword">var</span> result = arr.reduce(add,<span class="number">0</span>) <span class="comment">//10</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">pre,cur</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> pre + cur;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><blockquote><p>计算数组重复项</p></blockquote><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'a'</span>,<span class="string">'v'</span>,<span class="string">'c'</span>,<span class="string">'e'</span>,<span class="string">'e'</span>,<span class="string">'a'</span>];</span><br><span class="line"><span class="keyword">var</span> cal = arr.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">    a[b] =  a[b] ? ++a[b] : <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;,&#123;&#125;)</span><br><span class="line">cal; <span class="comment">//&#123;a: 3, b: 1, c: 2, v: 1, e: 2&#125;</span></span><br></pre></td></tr></table></figure><p>个人总结：理解这个API，首先应着重理解参数 <code>previousValue</code> 和 <code>initialValue</code>。previousValue，函数没执行时，存储的是第一个值，执行后，存储的是函数执行的返回值，即累计处理的值。initialValue，他的意义在于，给个默认值。避免为空。</p><the rest="" of="" contents="" |="" 余下全文=""></the>]]></content>
+      
+      <categories>
+          
+          <category> 前端 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
             <tag> 技巧 </tag>
+            
+            <tag> js </tag>
             
         </tags>
       
@@ -585,9 +606,9 @@
       
         <tags>
             
-            <tag> js </tag>
-            
             <tag> 技巧 </tag>
+            
+            <tag> js </tag>
             
         </tags>
       
